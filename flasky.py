@@ -13,6 +13,30 @@ app = create_app(os.getenv('APP_CONFIG') or 'dev')
 app.register_blueprint(blueprint)
 app.app_context().push()
 
+
+'''
+@app.cli.command()
+@click.option('--coverage/--no-coverage', default=False, help='Run tests under code coverage.')
+def test(coverage=False):
+    """Run the unit tests."""
+    if coverage:
+        import coverage
+        cov = coverage.coverage(branch=True, include='app/*')
+        cov.start()
+
+    # ... ejecución de las pruebas ...
+
+    if coverage:
+        cov.stop()
+        cov.save()
+        print('Coverage Summary:')
+        cov.report()
+        basedir = os.path.abspath(os.path.dirname(__file__))
+        covdir = os.path.join(basedir, 'tmp/coverage')
+        cov.html_report(directory=covdir)
+        print(f'HTML version: file://{covdir}/index.html')
+'''
+
 @app.cli.command()
 @click.option('--coverage/--no-coverage', default=False, help='Run tests under code coverage.')
 def test(coverage=False):
